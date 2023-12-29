@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Checker</title>
+    <style>
+        /* 添加一些基本样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Domain Checker</h1>
+        <form id="domainForm">
+            <label for="domainName">Enter Domain Name:</label>
+            <input type="text" id="domainName" name="domainName" required>
+            <input type="submit" value="Check">
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('domainForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var domain = document.getElementById('domainName').value;
+    fetchWhoisData(domain);
+});
+
+function fetchWhoisData(domain) {
+    fetch(`https://whois.freeaiapi.xyz/?name=${domain}&suffix=com`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // 打印数据以便检查
+            displayResult(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('result').innerHTML = 'An error occurred.';
+        });
+}
+
+function displayResult(data) {
+    var resultDiv = document.getElementById('result');
+    if (data.registered) {
+        resultDiv.innerHTML = `Domain is registered. Registration Date: ${data.registrationDate}`;
+    } else {
+        resultDiv.innerHTML = "Domain is not registered.";
+    }
+}
+
+    </script>
+</body>
+</html>
