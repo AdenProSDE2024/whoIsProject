@@ -1,18 +1,16 @@
-const fetch = require('node-fetch');
+// 使用import语句代替require
+import fetch from 'node-fetch';
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
   const { name, suffix } = req.query;
   try {
-    const whoisResponse = await fetch(`https://whois.freeaiapi.xyz/?name=${name}&suffix=${suffix}`);
-    
-    // Convert to JSON regardless of response type
-    const data = await whoisResponse.text();
-    try {
-      const jsonData = JSON.parse(data);
-      res.status(whoisResponse.status).json(jsonData);
-    } catch (error) {
-      // If not JSON, send as error message
-      res.status(whoisResponse.status).json({ error: data });
+    const response = await fetch(`https://whois.freeaiapi.xyz/?name=${name}&suffix=${suffix}`);
+    if (response.ok) {
+      const data = await response.json();
+      res.status(200).json(data);
+    } else {
+      // It's better to return JSON in all cases for consistency
+      res.status(response.status).json({ error: 'Error fetching data' });
     }
   } catch (error) {
     console.error('Error:', error);
