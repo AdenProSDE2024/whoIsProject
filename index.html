@@ -60,13 +60,15 @@ function fetchWhoisData(domain) {
 
 
 function displayResult(data) {
+    console.log('Received data:', data);
     var resultDiv = document.getElementById('result');
-    if (data.registered) {
-        resultDiv.innerHTML = `Domain is registered. Registration Date: ${data.registrationDate}`;
+    if (data.available === false) {
+        resultDiv.innerHTML = `Domain is registered. Registration Date: ${data.creation_datetime}`;
     } else {
         resultDiv.innerHTML = "Domain is not registered.";
     }
 }
+
 
     </script>
 </body>
