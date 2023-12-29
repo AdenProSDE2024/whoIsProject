@@ -40,17 +40,17 @@
 });
 
 function fetchWhoisData(domain) {
-    fetch(`https://whois.freeaiapi.xyz/?name=${domain}&suffix=com`)
+    fetch(`/api/proxy?name=${domain}&suffix=com`)
         .then(response => response.json())
         .then(data => {
-            console.log(data); // 打印数据以便检查
             displayResult(data);
         })
         .catch(error => {
             console.error('Error:', error);
-            document.getElementById('result').innerHTML = 'An error occurred.';
+            document.getElementById('result').innerHTML = 'An error occurred. See console for details.';
         });
 }
+
 
 function displayResult(data) {
     var resultDiv = document.getElementById('result');
