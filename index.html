@@ -41,15 +41,22 @@
 
 function fetchWhoisData(domain) {
     fetch(`/api/proxy?name=${domain}&suffix=com`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            } else {
+                return response.json();
+            }
+        })
         .then(data => {
             displayResult(data);
         })
         .catch(error => {
             console.error('Error:', error);
-            document.getElementById('result').innerHTML = 'An error occurred. See console for details.';
+            document.getElementById('result').innerHTML = `An error occurred: ${error.message}`;
         });
 }
+
 
 
 function displayResult(data) {
